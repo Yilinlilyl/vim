@@ -76,8 +76,10 @@ Bundle "airblade/vim-gitgutter"
 Bundle 'kien/ctrlp.vim'
 Bundle 'altercation/vim-colors-solarized'
 " Bundle 'tpope/vim-surround'
-Bundle 'myusuf3/numbers.vim'
+" Bundle 'myusuf3/numbers.vim'
 Bundle 'Townk/vim-autoclose'
+Bundle 'scrooloose/syntastic'
+Bundle 'spf13/PIV'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
