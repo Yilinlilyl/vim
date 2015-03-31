@@ -385,8 +385,10 @@ execute pathogen#infect()
             let mapleader=","
         endif
     " }
+    
     " vim-multiple-cursors {
-    if isdirectory(expand("~/.vim/bundle/vim-multiple-cursors/"))
+        if isdirectory(expand("~/.vim/bundle/vim-multiple-cursors/"))
             let mapleader=","
         endif
+    " 
 " }
