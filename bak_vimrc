@@ -141,6 +141,8 @@ execute pathogen#infect()
     let g:solarized_contrast="normal"
     let g:solarized_visibility="normal"
     color solarized
+    "colorscheme corporation_modified
+
 
     set tabpagemax=15               " Only show 15 tabs
     set showmode                    " Display the current mode
