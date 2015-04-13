@@ -63,7 +63,15 @@
     set viminfo='10,\"100,:20,%,n~/.viminfo
     au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm'\"")|else|exe "norm $"|endif|endif
 " }
-
+" map {
+    " 分割窗口
+    map ws :split<cr>
+    map wv :vsplit<cr>
+    nmap wj <C-W>j
+    nmap wk <C-W>k
+    nmap wh <C-W>h
+    nmap wl <C-W>l
+" }
 " Bundles {
     set nocompatible              " be iMproved, required
     filetype off                  " required
