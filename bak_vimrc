@@ -122,7 +122,12 @@
     Bundle 'kristijanhusak/vim-multiple-cursors'
     Bundle 'bling/vim-bufferline'
     Bundle 'Lokaltog/vim-easymotion'
+    
+    " PHP代码折叠神器，不卡，比内置的折叠好很多
+    Bundle 'rayburgemeestre/phpfolding.vim'
 
+    " PHP5.5语法支持
+    Bundle 'vim-scripts/php.vim-for-php5'
 
     " All of your Plugins must be added before the following line
     call vundle#end()            " required
