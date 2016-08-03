@@ -53,12 +53,9 @@ set laststatus=2    " 命令行（在状态行下）的高度，默认为1，这
 " 代码折叠  
 "----------------------------------------
 set foldenable    " 允许折叠
-"set foldmethod=syntax    " 按照语法折叠
-set foldmethod=indent " 按照缩进折叠
+set foldmethod=syntax    " 按照语法折叠
+"set foldmethod=indent " 按照缩进折叠
 set foldlevel=3    " 折叠级别
-"set foldmarker={,}  
-"set foldmethod=marker  
-"set foldmethod=syntax  
 "set foldlevel=100       " Don't autofold anything   
 "set foldopen-=search   " don't open folds when you search into them  
 "set foldopen-=undo     " don't open folds when you undo stuff  
@@ -119,11 +116,6 @@ function! NumberToggle()
     set relativenumber
   endif
 endfunc
-
-" 快速滚屏
-"nnoremap <C-h> 2<C-e>
-"nnoremap <C-y> 2<C-y>
-"
 
 "进行版权声明的设置
 "添加或更新头
@@ -230,9 +222,6 @@ Bundle 'tlwlmy/pyfold'
 "Bundle 'vim-scripts/python_fold'
 "Bundle 'tmhedberg/SimpylFold'
 
-"set foldmethod=syntax    " 按照语法折叠
-"set foldmethod=indent " 按照缩进折叠
-
 " js
 Bundle 'elzr/vim-json'
 Bundle 'groenewege/vim-less'
@@ -246,8 +235,6 @@ Bundle 'hail2u/vim-css3-syntax'
 Bundle 'gorodinskiy/vim-coloresque'
 Bundle 'tpope/vim-haml'
 Bundle 'mattn/emmet-vim'
-
-
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -264,27 +251,27 @@ colorscheme solarized
 " 插件配置
 
 " NerdTree {
-if isdirectory(expand("~/.vim/bundle/nerdtree"))
-    map <C-e> :NERDTreeToggle<CR>
-    map <leader>e :NERDTreeFind<CR>
-    nmap <leader>nt :NERDTreeFind<CR>
-endif
+    if isdirectory(expand("~/.vim/bundle/nerdtree"))
+        map <C-e> :NERDTreeToggle<CR>
+        map <leader>e :NERDTreeFind<CR>
+        nmap <leader>nt :NERDTreeFind<CR>
+    endif
 " }
 
-" Indent Guides 缩进列对齐线
-if isdirectory(expand("~/.vim/bundle/vim-indent-guides"))
-    let g:indent_guides_start_level = 2
-    let g:indent_guides_guide_size = 1
-    let g:indent_guides_enable_on_vim_startup = 1
-endif
+" Indent Guides 缩进列对齐线 {
+    if isdirectory(expand("~/.vim/bundle/vim-indent-guides"))
+        let g:indent_guides_start_level = 2
+        let g:indent_guides_guide_size = 1
+        let g:indent_guides_enable_on_vim_startup = 1
+    endif
 " }
 
 " ctrlp-funky
-if isdirectory(expand("~/.vim/bundle/ctrlp-funky"))
-    nnoremap <Leader>fu :CtrlPFunky<Cr>
-    " narrow the list down with a word under cursor
-    nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
-endif
+    if isdirectory(expand("~/.vim/bundle/ctrlp-funky"))
+        nnoremap <Leader>fu :CtrlPFunky<Cr>
+        " narrow the list down with a word under cursor
+        nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+    endif
 " }
 
 " Ctags {
@@ -300,24 +287,24 @@ endif
 " }
 
 " vim-airline {
-if isdirectory(expand("~/.vim/bundle/vim-airline/"))
-    if !exists('g:airline_theme')
-        let g:airline_theme = 'solarized'
+    if isdirectory(expand("~/.vim/bundle/vim-airline"))
+        if !exists('g:airline_theme')
+            let g:airline_theme = 'solarized'
+        endif
+        if !exists('g:airline_powerline_fonts')
+            " Use the default set of separators with a few customizations
+            let g:airline_left_sep='›'  " Slightly fancier than '>'
+            let g:airline_right_sep='‹' " Slightly fancier than '<'
+        endif
     endif
-    if !exists('g:airline_powerline_fonts')
-        " Use the default set of separators with a few customizations
-        let g:airline_left_sep='›'  " Slightly fancier than '>'
-        let g:airline_right_sep='‹' " Slightly fancier than '<'
-    endif
-endif
 " }
 
 
 " Wildfire {
-let g:wildfire_objects = {
-            \ "*" : ["i'", 'i"', "i)", "i]", "i}", "ip"],
-            \ "html,xml" : ["at"],
-            \ }
+    let g:wildfire_objects = {
+                \ "*" : ["i'", 'i"', "i)", "i]", "i}", "ip"],
+                \ "html,xml" : ["at"],
+                \ }
 " }
 
 " vim-easymotion {
@@ -332,33 +319,26 @@ let g:wildfire_objects = {
 " }
 
 " syntastic {
-if isdirectory(expand("~/.vim/bundle/syntastic"))
-    " 设置每次w保存后语法检查
-    function! ToggleErrors()
-        Errors
-    endfunction
-    "set statusline+=%#warningmsg#
-    "set statusline+=%{SyntasticStatuslineFlag()}
-    "set statusline+=%*
+    if isdirectory(expand("~/.vim/bundle/syntastic"))
+        " 设置每次w保存后语法检查
+        function! ToggleErrors()
+            Errors
+        endfunction
+        "set statusline+=%#warningmsg#
+        "set statusline+=%{SyntasticStatuslineFlag()}
+        "set statusline+=%*
 
-    let g:syntastic_check_on_open=1
-    let g:syntastic_always_populate_loc_list = 1
-    let g:syntastic_auto_loc_list = 1
-    let g:syntastic_check_on_wq = 0
-    let syntastic_loc_list_height = 5
-    let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
-    autocmd WinEnter * if &buftype ==#'quickfix' && winnr('$') == 1 | quit |endif
-    autocmd WinLeave * lclose
-endif
-" }
-
-" ctrlp-funky{
-    if isdirectory(expand("~/.vim/bundle/ctrlp-funky"))
-        nnoremap <Leader>fu :CtrlPFunky<Cr>
-        " narrow the list down with a word under cursor
-        nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+        let g:syntastic_check_on_open=1
+        let g:syntastic_always_populate_loc_list = 1
+        let g:syntastic_auto_loc_list = 1
+        let g:syntastic_check_on_wq = 0
+        let syntastic_loc_list_height = 5
+        let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
+        autocmd WinEnter * if &buftype ==#'quickfix' && winnr('$') == 1 | quit |endif
+        autocmd WinLeave * lclose
     endif
 " }
+
 
 " PyMode {
     let python_highlight_all = 1
@@ -380,84 +360,6 @@ endif
 
     "let g:flake8_show_quickfix=0
     "autocmd BufWritePost *.py call Flake8()
-" }
-
-" Shougo/neocomplete.vim {
-if isdirectory(expand("~/.vim/bundle/neocomplete.vim"))
-    "Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-    " Disable AutoComplPop.
-    let g:acp_enableAtStartup = 0
-    " Use neocomplete.
-    let g:neocomplete#enable_at_startup = 1
-    " Use smartcase.
-    let g:neocomplete#enable_smart_case = 1
-    " Set minimum syntax keyword length.
-    let g:neocomplete#sources#syntax#min_keyword_length = 3
-    let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-
-    " Define dictionary.
-    let g:neocomplete#sources#dictionary#dictionaries = {
-        \ 'default' : '',
-        \ 'vimshell' : $HOME.'/.vimshell_hist',
-        \ 'scheme' : $HOME.'/.gosh_completions'
-            \ }
-
-    " Define keyword.
-    if !exists('g:neocomplete#keyword_patterns')
-        let g:neocomplete#keyword_patterns = {}
-    endif
-    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-    " Plugin key-mappings.
-    inoremap <expr><C-g>     neocomplete#undo_completion()
-    inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-    " Recommended key-mappings.
-    " <CR>: close popup and save indent.
-    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-    function! s:my_cr_function()
-    return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-    " For no inserting <CR> key.
-    "return pumvisible() ? "\<C-y>" : "\<CR>"
-    endfunction
-    " <TAB>: completion.
-    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-    " <C-h>, <BS>: close popup and delete backword char.
-    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-    " Close popup by <Space>.
-    "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-
-    " AutoComplPop like behavior.
-    "let g:neocomplete#enable_auto_select = 1
-
-    " Shell like behavior(not recommended).
-    "set completeopt+=longest
-    "let g:neocomplete#enable_auto_select = 1
-    "let g:neocomplete#disable_auto_complete = 1
-    "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
-
-    " Enable omni completion.
-    autocmd Filetype * if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
-    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-    " Enable heavy omni completion.
-    if !exists('g:neocomplete#sources#omni#input_patterns')
-    let g:neocomplete#sources#omni#input_patterns = {}
-    endif
-    "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-    "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-    "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-    " For perlomni.vim setting.
-    " https://github.com/c9s/perlomni.vim
-    let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-
-endif
 " }
 
 " YouCompleteMe {
