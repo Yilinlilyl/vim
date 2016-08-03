@@ -74,10 +74,6 @@ set mouse=a      " 启动鼠标所有模式，但是右键功能不可用, 可�
 set mousehide    " 输入文件时隐藏鼠标
 " set selection=exclusive 和<gv冲突，最后一行不可以移动
 
-" 恢复上次文件打开位置
-set viminfo='10,\"100,:20,%,n~/.viminfo
-au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm'\"")|else|exe "norm $"|endif|endif
-
 " 前导符号
 "----------------------------------------
 let mapleader = ','
@@ -97,6 +93,10 @@ nmap wj <C-W>j
 nmap wk <C-W>k
 nmap wh <C-W>h
 nmap wl <C-W>l
+nmap wq <C-W>q
+nmap wr <C-W>>
+nmap wa <C-W>+
+nmap wd <C-W>-
 
 " For when you forget to sudo.. Really Write the file.
 cmap w!! w !sudo tee % >/dev/null
@@ -123,6 +123,19 @@ endfunc
 "nnoremap <C-h> 2<C-e>
 "nnoremap <C-y> 2<C-y>
 "
+
+"进行版权声明的设置
+"添加或更新头
+map <leader>df :call AddTitle()<cr>
+autocmd BufNewFile *.py :call AddTitle()
+function AddTitle()
+    call append(0,"#!/usr/bin/env python")
+    call append(1,"#-*- coding: utf-8 -*-")
+    call append(2,"# vim:fenc=utf-8")
+    call append(3,"# @author tlwlmy")
+    call append(4,"# @version ".strftime("%Y-%m-%d %H:%M:%S"))
+    call append(5,"")
+endf
 
 " Bundles（插件管理）
 "----------------------------------------
@@ -181,6 +194,9 @@ Bundle 'terryma/vim-multiple-cursors'
 " 生成函数、变量列表，需要先装ctags
 Bundle 'majutsushi/tagbar'
 
+" 保存vim编辑信息，比如最后的位置
+Bundle "vim-scripts/restore_view.vim"
+
 " 垂直缩进对齐线
 Bundle 'nathanaelkane/vim-indent-guides'
 
@@ -210,6 +226,21 @@ Bundle 'pythoncomplete'
 "Bundle 'nvie/vim-flake8'
 "Bundle 'kevinw/pyflakes-vim'
 "Bundle 'vim-scripts/python_fold'
+
+" js
+Bundle 'elzr/vim-json'
+Bundle 'groenewege/vim-less'
+Bundle 'pangloss/vim-javascript'
+Bundle 'briancollins/vim-jst'
+Bundle 'kchmck/vim-coffee-script'
+
+" html
+Bundle 'amirh/HTML-AutoCloseTag'
+Bundle 'hail2u/vim-css3-syntax'
+Bundle 'gorodinskiy/vim-coloresque'
+Bundle 'tpope/vim-haml'
+Bundle 'mattn/emmet-vim'
+
 
 
 " All of your Plugins must be added before the following line
