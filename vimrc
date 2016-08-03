@@ -30,6 +30,7 @@ set nojoinspaces    " 用J合并两行用一个空格隔开
 set report=0    " 通过使用: commands命令，告诉我们文件的哪一行被改变过 
 set noerrorbells    " 不让vim发出讨厌的滴滴声 
 set scrolloff=3    " 光标移动到buffer的顶部和底部时保持3行距离
+set cursorline " 选中行高亮 
  
 " 缩进
 "----------------------------------------
@@ -40,7 +41,6 @@ set softtabstop=4    " 回退可以删除缩进
 set shiftround    "Use multiple of shiftwidth when indenting with '<' and '>'
 set autoindent    " 继承前一行的缩进方式，特别适用于多行注释
 set ai    " 自动缩进
-set si    " 智能缩进
 
 " 状态栏使用状态栏插件vim-airline
 "----------------------------------------
@@ -53,7 +53,8 @@ set laststatus=2    " 命令行（在状态行下）的高度，默认为1，这
 " 代码折叠  
 "----------------------------------------
 set foldenable    " 允许折叠
-set foldmethod=syntax    " 按照语法折叠
+"set foldmethod=syntax    " 按照语法折叠
+set foldmethod=indent " 按照缩进折叠
 set foldlevel=3    " 折叠级别
 "set foldmarker={,}  
 "set foldmethod=marker  
@@ -119,20 +120,20 @@ function! NumberToggle()
 endfunc
 
 " 快速滚屏
-nnoremap <C-e> 2<C-e>
-nnoremap <C-y> 2<C-y>
-
+"nnoremap <C-h> 2<C-e>
+"nnoremap <C-y> 2<C-y>
+"
 
 " Bundles（插件管理）
 "----------------------------------------
 set nocompatible              " be iMproved, required
-"filetype off                  " required
+filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
-call vundle#begin('~/some/path/here')
+" call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
@@ -150,16 +151,26 @@ Bundle 'jiangmiao/auto-pairs'
 " 自动注释
 Bundle 'scrooloose/nerdcommenter'
 
+" 自动补全
+"Bundle 'Valloric/YouCompleteMe'
+Bundle 'Shougo/neocomplete.vim'
+
 " 显示git diff状态
 Bundle "airblade/vim-gitgutter"
+
+" git命令
+Bundle "tpope/vim-fugitive"
 
 " 文件查找插件
 Bundle 'kien/ctrlp.vim'
 
+" 函数模糊匹配查找
+Bundle 'tacahiroy/ctrlp-funky'
+
 " 状态栏插件
 Bundle 'bling/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
-Bundle 'Lokaltog/vim-powerline'
+"Bundle 'Lokaltog/vim-powerline'
 
 " 字符串包围/改变或去除引号/括号或者HTML标签
 Bundle 'tpope/vim-surround'
@@ -167,11 +178,8 @@ Bundle 'tpope/vim-surround'
 " 光标多行编辑 <C-n> <C-x> <C-p>
 Bundle 'terryma/vim-multiple-cursors'
 
-Bundle 'Lokaltog/vim-distinguished'
-
 " 生成函数、变量列表，需要先装ctags
 Bundle 'majutsushi/tagbar'
-nmap <C-i> :TagbarToggle<CR>
 
 " 垂直缩进对齐线
 Bundle 'nathanaelkane/vim-indent-guides'
@@ -182,14 +190,39 @@ Bundle 'gcmt/wildfire.vim'
 " 快速跳转
 Bundle 'Lokaltog/vim-easymotion'
 
+" todo list跳转
+Bundle 'vim-scripts/TaskList.vim'
+
+" 颜色配色方案
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'Lokaltog/vim-distinguished'
+
 " python
+"Bundle 'klen/python-mode'
+Bundle 'yssource/python.vim'
+Bundle 'hdima/python-syntax'
 Bundle 'hynek/vim-python-pep8-indent'
+" python补全插件
+Bundle 'davidhalter/jedi-vim'
+Bundle 'python_match.vim'
+Bundle 'pythoncomplete'
+"Bundle 'vim-scripts/pep8'
+"Bundle 'nvie/vim-flake8'
+"Bundle 'kevinw/pyflakes-vim'
+"Bundle 'vim-scripts/python_fold'
 
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+
+" UI
+syntax enable
+set background=dark
+"colorscheme distinguished
+"colorscheme vividchalk
+colorscheme solarized
 
 " 插件配置
 
@@ -199,6 +232,34 @@ if isdirectory(expand("~/.vim/bundle/nerdtree"))
     map <leader>e :NERDTreeFind<CR>
     nmap <leader>nt :NERDTreeFind<CR>
 endif
+" }
+
+" Indent Guides 缩进列对齐线
+if isdirectory(expand("~/.vim/bundle/vim-indent-guides"))
+    let g:indent_guides_start_level = 2
+    let g:indent_guides_guide_size = 1
+    let g:indent_guides_enable_on_vim_startup = 1
+endif
+" }
+
+" ctrlp-funky
+if isdirectory(expand("~/.vim/bundle/ctrlp-funky"))
+    nnoremap <Leader>fu :CtrlPFunky<Cr>
+    " narrow the list down with a word under cursor
+    nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+endif
+" }
+
+" Ctags {
+    set tags=./tags;/,~/.vimtags
+
+    " Make tags placed in .git/tags file available in all levels of a repository
+    let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
+    if gitroot != ''
+        let &tags = &tags . ',' . gitroot . '/.git/tags'
+    endif
+
+    nmap <C-i> :TagbarToggle<CR>
 " }
 
 " vim-airline {
@@ -231,4 +292,133 @@ let g:wildfire_objects = {
     map <Leader><leader>l <Plug>(easymotion-lineforward)
     " 重复上一次操作, 类似repeat插件, 很强大
     map <Leader><leader>. <Plug>(easymotion-repeat)
+" }
+
+" syntastic {
+if isdirectory(expand("~/.vim/bundle/syntastic"))
+    " 设置每次w保存后语法检查
+    function! ToggleErrors()
+        Errors
+    endfunction
+    "set statusline+=%#warningmsg#
+    "set statusline+=%{SyntasticStatuslineFlag()}
+    "set statusline+=%*
+
+    let g:syntastic_check_on_open=1
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_auto_loc_list = 1
+    let g:syntastic_check_on_wq = 0
+    let syntastic_loc_list_height = 5
+    let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
+    autocmd WinEnter * if &buftype ==#'quickfix' && winnr('$') == 1 | quit |endif
+    autocmd WinLeave * lclose
+endif
+" }
+
+" ctrlp-funky{
+    if isdirectory(expand("~/.vim/bundle/ctrlp-funky"))
+        nnoremap <Leader>fu :CtrlPFunky<Cr>
+        " narrow the list down with a word under cursor
+        nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+    endif
+" }
+
+" PyMode {
+    let python_highlight_all = 1
+    " Disable if python support not present
+    if !has('python') && !has('python3')
+        let g:pymode = 0
+    endif
+
+    if isdirectory(expand("~/.vim/bundle/python-mode"))
+        let g:pymode_lint_checkers = ['pyflakes']
+        let g:pymode_trim_whitespaces = 0
+        let g:pymode_options = 0
+        let g:pymode_rope = 0
+    endif
+
+    let g:syntastic_python_checkers = ['flake8']
+    "let g:syntastic_python_flake8_exec = 'flake8-python2'
+    let g:syntastic_python_flake8_args='--ignore=E501,E225,F405,E401,E302'
+
+    "let g:flake8_show_quickfix=0
+    "autocmd BufWritePost *.py call Flake8()
+" }
+
+" Shougo/neocomplete.vim {
+if isdirectory(expand("~/.vim/bundle/neocomplete.vim"))
+    "Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+    " Disable AutoComplPop.
+    let g:acp_enableAtStartup = 0
+    " Use neocomplete.
+    let g:neocomplete#enable_at_startup = 1
+    " Use smartcase.
+    let g:neocomplete#enable_smart_case = 1
+    " Set minimum syntax keyword length.
+    let g:neocomplete#sources#syntax#min_keyword_length = 3
+    let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+    " Define dictionary.
+    let g:neocomplete#sources#dictionary#dictionaries = {
+        \ 'default' : '',
+        \ 'vimshell' : $HOME.'/.vimshell_hist',
+        \ 'scheme' : $HOME.'/.gosh_completions'
+            \ }
+
+    " Define keyword.
+    if !exists('g:neocomplete#keyword_patterns')
+        let g:neocomplete#keyword_patterns = {}
+    endif
+    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+    " Plugin key-mappings.
+    inoremap <expr><C-g>     neocomplete#undo_completion()
+    inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+    " Recommended key-mappings.
+    " <CR>: close popup and save indent.
+    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+    function! s:my_cr_function()
+    return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+    " For no inserting <CR> key.
+    "return pumvisible() ? "\<C-y>" : "\<CR>"
+    endfunction
+    " <TAB>: completion.
+    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+    " <C-h>, <BS>: close popup and delete backword char.
+    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+    " Close popup by <Space>.
+    "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+
+    " AutoComplPop like behavior.
+    "let g:neocomplete#enable_auto_select = 1
+
+    " Shell like behavior(not recommended).
+    "set completeopt+=longest
+    "let g:neocomplete#enable_auto_select = 1
+    "let g:neocomplete#disable_auto_complete = 1
+    "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+    " Enable omni completion.
+    autocmd Filetype * if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+    " Enable heavy omni completion.
+    if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+    endif
+    "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+    "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+    "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+    " For perlomni.vim setting.
+    " https://github.com/c9s/perlomni.vim
+    let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+endif
 " }
