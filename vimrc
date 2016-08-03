@@ -166,8 +166,8 @@ Bundle 'jiangmiao/auto-pairs'
 Bundle 'scrooloose/nerdcommenter'
 
 " 自动补全
-"Bundle 'Valloric/YouCompleteMe'
-Bundle 'Shougo/neocomplete.vim'
+Bundle 'Valloric/YouCompleteMe'
+"Bundle 'Shougo/neocomplete.vim'
 
 " 显示git diff状态
 Bundle "airblade/vim-gitgutter"
@@ -196,7 +196,7 @@ Bundle 'terryma/vim-multiple-cursors'
 Bundle 'majutsushi/tagbar'
 
 " 保存vim编辑信息，比如最后的位置
-Bundle "vim-scripts/restore_view.vim"
+Bundle 'vim-scripts/restore_view.vim'
 
 " 垂直缩进对齐线
 Bundle 'nathanaelkane/vim-indent-guides'
@@ -223,10 +223,15 @@ Bundle 'hynek/vim-python-pep8-indent'
 Bundle 'davidhalter/jedi-vim'
 Bundle 'python_match.vim'
 Bundle 'pythoncomplete'
+Bundle 'tlwlmy/pyfold'
 "Bundle 'vim-scripts/pep8'
 "Bundle 'nvie/vim-flake8'
 "Bundle 'kevinw/pyflakes-vim'
 "Bundle 'vim-scripts/python_fold'
+"Bundle 'tmhedberg/SimpylFold'
+
+"set foldmethod=syntax    " 按照语法折叠
+"set foldmethod=indent " 按照缩进折叠
 
 " js
 Bundle 'elzr/vim-json'
@@ -453,4 +458,54 @@ if isdirectory(expand("~/.vim/bundle/neocomplete.vim"))
     let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 endif
+" }
+
+" YouCompleteMe {
+    if isdirectory(expand("~/.vim/bundle/YouCompleteMe"))
+        let g:acp_enableAtStartup = 0
+
+        " remap Ultisnips for compatibility for YCM
+        let g:UltiSnipsExpandTrigger = '<C-j>'
+        let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+        let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
+
+        "允许在字符串里补全（双引号）
+        let g:ycm_complete_in_strings = 1
+        "开启基于tag的补全，可以在这之后添加需要的标签路径  
+        let g:ycm_collect_identifiers_from_tags_files = 1  
+        "开启语义补全  
+        let g:ycm_seed_identifiers_with_syntax = 1  
+        "在接受补全后不分裂出一个窗口显示接受的项  
+        set completeopt-=preview  
+        "不显示开启vim时检查ycm_extra_conf文件的信息  
+        let g:ycm_confirm_extra_conf=0  
+        "每次重新生成匹配项，禁止缓存匹配项  
+        let g:ycm_cache_omnifunc=0  
+        "在注释中也可以补全  
+        let g:ycm_complete_in_comments=1  
+        "输入第一个字符就开始补全  
+        let g:ycm_min_num_of_chars_for_completion=1 
+        "在注释输入中也能补全
+        let g:ycm_complete_in_comments = 1
+        "在字符串输入中也能补全
+        let g:ycm_complete_in_strings = 1
+        "注释和字符串中的文字也会被收入补全
+        let g:ycm_collect_identifiers_from_comments_and_strings = 1
+
+        nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>	"force recomile with syntastic
+        "nnoremap <leader>lo :lopen<CR>	"open locationlist
+        "nnoremap <leader>lc :lclose<CR>	"close locationlist
+        inoremap <leader><leader> <C-x><C-o>
+
+        " Enable omni completion.
+        autocmd Filetype * if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+        autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+        autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+        autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+        autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+        autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+        autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+        autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
+    endif
 " }
