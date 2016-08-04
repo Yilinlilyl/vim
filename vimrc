@@ -55,7 +55,7 @@ set laststatus=2    " 命令行（在状态行下）的高度，默认为1，这
 set foldenable    " 允许折叠
 set foldmethod=syntax    " 按照语法折叠
 "set foldmethod=indent " 按照缩进折叠
-set foldlevel=3    " 折叠级别
+set foldlevel=2    " 折叠级别
 "set foldlevel=100       " Don't autofold anything   
 "set foldopen-=search   " don't open folds when you search into them  
 "set foldopen-=undo     " don't open folds when you undo stuff  
@@ -205,6 +205,7 @@ Bundle 'vim-scripts/TaskList.vim'
 " 颜色配色方案
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'Lokaltog/vim-distinguished'
+Bundle 'flazz/vim-colorschemes'
 
 " python
 "Bundle 'klen/python-mode'
@@ -221,6 +222,9 @@ Bundle 'tlwlmy/pyfold'
 "Bundle 'kevinw/pyflakes-vim'
 "Bundle 'vim-scripts/python_fold'
 "Bundle 'tmhedberg/SimpylFold'
+
+" PHP代码折叠神器，不卡，比内置的折叠好很多
+"Bundle 'rayburgemeestre/phpfolding.vim'
 
 " js
 Bundle 'elzr/vim-json'
@@ -362,8 +366,18 @@ colorscheme solarized
     "autocmd BufWritePost *.py call Flake8()
 " }
 
+" php {
+    " Turn on PHP fast folds
+    let g:DisableAutoPHPFolding = 0
+" }
+
 " YouCompleteMe {
     if isdirectory(expand("~/.vim/bundle/YouCompleteMe"))
+        "设置error和warning的提示符，如果没有设置，ycm会以syntastic的  
+        " g:syntastic_warning_symbol 和 g:syntastic_error_symbol 这两个为准  
+        let g:ycm_error_symbol='>>'  
+        let g:ycm_warning_symbol='>*' 
+
         let g:acp_enableAtStartup = 0
 
         " remap Ultisnips for compatibility for YCM
