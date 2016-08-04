@@ -231,7 +231,7 @@ Bundle 'briancollins/vim-jst'
 Bundle 'kchmck/vim-coffee-script'
 
 " html
-Bundle 'amirh/HTML-AutoCloseTag'
+Bundle 'tlwlmy/HTML-AutoCloseTag'
 Bundle 'hail2u/vim-css3-syntax'
 Bundle 'gorodinskiy/vim-coloresque'
 Bundle 'tpope/vim-haml'
