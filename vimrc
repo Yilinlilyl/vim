@@ -135,10 +135,11 @@ endf
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-set rtp+=~/.vim/bundle/vundle
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-Bundle 'vim-scripts/vundle'
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
 
 " 文件索引树
 Bundle "scrooloose/nerdtree"
@@ -237,6 +238,8 @@ Bundle 'tpope/vim-haml'
 Bundle 'mattn/emmet-vim'
 
 filetype on
+call vundle#end()            " required
+filetype plugin indent on    " required
 
 
 " UI
