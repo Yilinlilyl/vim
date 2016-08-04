@@ -243,11 +243,20 @@ filetype plugin indent on    " required
 
 
 " UI
-syntax enable
 set background=dark
+set t_Co=256 
+if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+    "let g:solarized_termcolors=256 ubuntu termitor set
+    let g:solarized_termtrans=1
+    let g:solarized_contrast="normal"
+    let g:solarized_visibility="normal"
+endif
+
 "colorscheme distinguished
 "colorscheme vividchalk
+"colorscheme molokai
 colorscheme solarized
+
 
 " 插件配置
 
