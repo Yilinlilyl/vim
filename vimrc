@@ -309,6 +309,10 @@ colorscheme solarized
     endif
 " }
 
+" tpope/vim-fugitive {
+    nmap gj <Plug>GitGutterNextHunk
+    nmap gk <Plug>GitGutterPrevHunk
+" }
 
 " Wildfire {
     let g:wildfire_objects = {
