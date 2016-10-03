@@ -95,6 +95,7 @@ nmap wr <C-W>>w
 nmap wf <C-W><w
 nmap wi <C-W>+w
 nmap wd <C-W>-w
+nmap wx <C-W>x
 
 " For when you forget to sudo.. Really Write the file.
 cmap w!! w !sudo tee % >/dev/null
