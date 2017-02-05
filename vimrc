@@ -242,6 +242,9 @@ filetype on
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+" vue
+" Bundle 'posva/vim-vue'
+au BufRead,BufNewFile *.vue set ft=html
 
 " UI
 set background=dark
