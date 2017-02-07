@@ -279,6 +279,7 @@ colorscheme solarized
         map <C-e> :NERDTreeToggle<CR>
         map <leader>e :NERDTreeFind<CR>
         nmap <leader>nt :NERDTreeFind<CR>
+        let NERDTreeIgnore=['\.pyc$', '\~$'] 
     endif
 " }
 
