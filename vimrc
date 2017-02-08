@@ -291,6 +291,16 @@ colorscheme solarized
     endif
 " }
 
+" kien/ctrlp.vim {
+    if isdirectory(expand("~/.vim/bundle/ctrlp.vim"))
+        let g:ctrlp_custom_ignore = {
+          \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+          \ 'file': '\v\.(exe|so|dll|pyc)$',
+          \ 'link': 'some_bad_symbolic_links',
+          \ }
+    endif
+" }
+
 " ctrlp-funky
     if isdirectory(expand("~/.vim/bundle/ctrlp-funky"))
         nnoremap <Leader>fu :CtrlPFunky<Cr>
