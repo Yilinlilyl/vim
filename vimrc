@@ -76,10 +76,44 @@ set mousehide    " 输入文件时隐藏鼠标
 "autocmd FileType php,python,c,java,perl,shell,bash,vim,ruby,cpp set sw=4
 "autocmd FileType php,python,c,java,perl,shell,bash,vim,ruby,cpp set ts=4
 "autocmd FileType php,python,c,java,perl,shell,bash,vim,ruby,cpp set sts=4
-autocmd FileType javascript,html,css,xml set ai
-autocmd FileType javascript,html,css,xml set sw=2
-autocmd FileType javascript,html,css,xml set ts=2
-autocmd FileType javascript,html,css,xml set sts=2
+"autocmd FileType javascript,html,css,xml set ai
+"autocmd FileType javascript,html,css,xml set sw=2
+"autocmd FileType javascript,html,css,xml set ts=2
+"autocmd FileType javascript,html,css,xml set sts=2
+
+" 为不同的文件类型设置不同的空格数替换TAB
+augroup filetype_formats
+  au!
+  au BufNewFile,BufRead *.{vim,vimrc}
+        \ setlocal foldmethod=marker |
+        \ setlocal tabstop=2         |
+        \ setlocal softtabstop=2     |
+        \ setlocal shiftwidth=2
+
+  " PEP8 intent
+  au BufNewFile,BufRead *.py
+       \ setlocal autoindent      |
+       \ setlocal nowrap          |
+       \ setlocal sidescroll=5    |
+       \ let g:python_highlight_all = 1
+       " \ set listchars+=precedes:<,extends:>
+       " \ set textwidth=79 |
+
+  au BufNewFile,BufRead *.js,*.html,*.css,*.yml
+      \ setlocal tabstop=2     |
+      \ setlocal softtabstop=2 |
+      \ setlocal shiftwidth=2
+
+  " autocmd BufNewFile,BufRead *.{md,mkd,mkdn,mark*}
+  "   \ set filetype=markdown
+
+  " useless whitespaces
+  au BufRead,BufNewFile *.py,*.pyw,*.c,*.h,*.{vim,vimrc}
+      \ match BadWhitespace /\s\+$/
+
+augroup END
+
+highlight BadWhitespace ctermbg=red guibg=darkred
 
 " 前导符号
 "----------------------------------------
@@ -130,16 +164,45 @@ endfunc
 
 "进行版权声明的设置
 "添加或更新头
-map <leader>df :call AddTitle()<cr>
-autocmd BufNewFile *.py :call AddTitle()
-function AddTitle()
-    call append(0,"#!/usr/bin/env python")
-    call append(1,"#-*- coding: utf-8 -*-")
-    call append(2,"# vim:fenc=utf-8")
-    call append(3,"# @author tlwlmy")
-    call append(4,"# @version ".strftime("%Y-%m-%d %H:%M:%S"))
-    call append(5,"")
-endf
+augroup AddFileHeaders
+  au!
+  au BufNewFile *.sh
+        \ call setline(1, '#!/usr/bin/env bash') |
+        \ call append(line('.'), '')             |
+        \ normal! Go
+  au BufNewFile *.py
+        \ call append(0,"#!/usr/bin/env python")            |
+        \ call append(1,"#-*- coding: utf-8 -*-")           |
+        \ call append(2,"# vim:fenc=utf-8")                 |
+        \ call append(3,"# @author tlwlmy")                 |
+        \ call append(4,"# @version ".strftime("%Y-%m-%d")) |
+        \ call append(5,"")                                 |
+        \ normal! Go
+  au BufNewFile *.{cpp,cc}
+        \ call setline(1, '#include <iostream>') |
+        \ call append(line('.'), '')             |
+        \ normal! Go
+  au BufNewFile *.c
+        \ call setline(1, '#include <stdio.h>') |
+        \ call append(line('.'), '')            |
+        \ normal! Go
+  au BufNewFile *.h,*.hpp
+        \ call setline(1, '#ifndef _'.toupper(expand('%:r')).'_H') |
+        \ call setline(2, '#define _'.toupper(expand('%:r')).'_H') |
+        \ call setline(3, '#endif')                                |
+        \ normal! Go
+augroup END
+
+"map <leader>df :call AddTitle()<cr>
+"autocmd BufNewFile *.py :call AddTitle()
+"function AddTitle()
+    "call append(0,"#!/usr/bin/env python")
+    "call append(1,"#-*- coding: utf-8 -*-")
+    "call append(2,"# vim:fenc=utf-8")
+    "call append(3,"# @author tlwlmy")
+    "call append(4,"# @version ".strftime("%Y-%m-%d %H:%M:%S"))
+    "call append(5,"")
+"endf
 
 " Bundles（插件管理）
 "----------------------------------------
