@@ -311,6 +311,12 @@ Bundle 'gorodinskiy/vim-coloresque'
 Bundle 'tpope/vim-haml'
 Bundle 'mattn/emmet-vim'
 
+" vue
+Bundle 'posva/vim-vue'
+
+" go
+Bundle 'fatih/vim-go'
+
 filetype on
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -505,6 +511,9 @@ colorscheme solarized
         let g:ycm_complete_in_strings = 1
         "注释和字符串中的文字也会被收入补全
         let g:ycm_collect_identifiers_from_comments_and_strings = 1
+
+        "配置python路径
+        let g:ycm_path_to_python_interpreter="/usr/bin/python"
 
         nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>	"force recomile with syntastic
         "nnoremap <leader>lo :lopen<CR>	"open locationlist
